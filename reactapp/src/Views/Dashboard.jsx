@@ -1,10 +1,20 @@
+import GoalCreator from "../Components/Dashboard/GoalCreator";
+import GoalCalendar from "../Components/Dashboard/GoalCalendar";
+import GoalProgress from "../Components/Dashboard/GoalProgress";
 
-function Dashboard (){
+const Dashboard = () => {
   return (
-  <div>
-      <h1>DashBoard</h1>
-
+    <>
+    <div className="d-flex gap-5 justify-content-center p-5">
+      <div>
+        <GoalCreator/>
+      </div>
+      <div>
+        <GoalCalendar/>
+        <GoalProgress/>
+      </div>
     </div>
+    </>
   );
 }
 
