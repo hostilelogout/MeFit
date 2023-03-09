@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: rgb(255, 187, 187);
 }
 
 code {
@@ -12,6 +14,17 @@ code {
     monospace;
 }
 
+.overflow-y-scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.bg-container {
+  background-color: rgb(226, 78, 78);
+}
+.bg-box {
+  background-color: rgb(243, 84, 84);
+}
 .bg-red {
   background-color: rgb(200, 69, 69);
 }
@@ -28,10 +41,31 @@ code {
 .w-480 {
   width: 480px;
 }
+.wp-40 {
+  width: 40%;
+}
+.wp-50 {
+  width: 50%;
+}
+.wp-100 {
+  width: 100%;
+}
 
+.h-100 {
+  height: 100px;
+}
 .h-300 {
   height: 300px;
 }
 .h-600 {
   height: 600px;
+}
+.hp-20 {
+  height: 20%;
+}
+.hp-80 {
+  height: 80%;
+}
+.hp-100 {
+  height: 100%;
 }

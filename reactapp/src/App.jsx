@@ -11,14 +11,15 @@ function App() {
         <main className="container">
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route
+            <Route path="/dashboard" element={<Dashboard/>}/>
+            {/* <Route
               path="/dashboard"
               element={
                 <KeycloakRoute role={ ROLES.Regular }>
                   <Dashboard />
                 </KeycloakRoute>
               }
-            />
+            /> */}
           </Routes>
         </main>
       </BrowserRouter>
