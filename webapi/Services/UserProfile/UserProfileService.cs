@@ -12,6 +12,12 @@ namespace webapi.Services.UserProfile
         {
             _context = context;
         }
+
+        public Task ContributorRequest(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Models.UserProfile> Create(Models.UserProfile entity)
         {
             _context.UserProfiles.Add(entity);
