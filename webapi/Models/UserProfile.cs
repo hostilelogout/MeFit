@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class Profile
+public partial class UserProfile
 {
     public int Id { get; set; }
 
@@ -36,4 +36,6 @@ public partial class Profile
     public virtual User FkUser { get; set; } = null!;
 
     public virtual ICollection<Goal> Goals { get; } = new List<Goal>();
+
+    public ICollection<Workout> Workouts { get; set; }
 }
