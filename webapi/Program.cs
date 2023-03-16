@@ -134,52 +134,54 @@ namespace webapi
                             var response = client.GetAsync(keyuri).Result;
                             var responseString = response.Content.ReadAsStringAsync().Result;
                             var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
+
+
                             return keys.Keys;
                         }
                     };
                 });
 
-            builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = async context =>
-                    {
-                        var userIdClaim = context.Principal.FindFirst("sub");
-                        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-                        {
-                            // Add the user ID to the HttpContext so it's available to controllers
-                            context.HttpContext.Items["UserId"] = userId;
-                        }
-                        else
-                        {
-                            context.Fail("Unable to extract user ID from token");
-                        }
-                    },
-                    OnAuthenticationFailed = async context =>
-                    {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                        {
-                            context.Response.Headers.Add("Token-Expired", "true");
-                        }
-                        else
-                        {
-                            context.Fail("Unauthorized");
-                        }
-                    },
-                    OnChallenge = async context =>
-                    {
-                        context.HandleResponse();
+            //builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            //{
+            //    options.Events = new JwtBearerEvents
+            //    {
+            //        OnTokenValidated = async context =>
+            //        {
+            //            var userIdClaim = context.Principal.FindFirst("sub");
+            //            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            //            {
+            //                // Add the user ID to the HttpContext so it's available to controllers
+            //                context.HttpContext.Items["UserId"] = userId;
+            //            }
+            //            else
+            //            {
+            //                context.Fail("Unable to extract user ID from token");
+            //            }
+            //        },
+            //        OnAuthenticationFailed = async context =>
+            //        {
+            //            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            //            {
+            //                context.Response.Headers.Add("Token-Expired", "true");
+            //            }
+            //            else
+            //            {
+            //                context.Fail("Unauthorized");
+            //            }
+            //        },
+            //        OnChallenge = async context =>
+            //        {
+            //            context.HandleResponse();
 
-                        if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
-                        {
-                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                            context.Response.ContentType = "application/json";
-                            await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "Unauthorized" }));
-                        }
-                    }
-                };
-            });
+            //            if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
+            //            {
+            //                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            //                context.Response.ContentType = "application/json";
+            //                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { error = "Unauthorized" }));
+            //            }
+            //        }
+            //    };
+            //});
 
             // Build the application.
             var app = builder.Build();
