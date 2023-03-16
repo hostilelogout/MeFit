@@ -21,7 +21,6 @@ namespace webapi.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
-    [Authorize]
     public class AddressesController : ControllerBase
     {
         private readonly IAddressService _service;
@@ -42,6 +41,7 @@ namespace webapi.Controllers
 
         // GET: api/Addresses/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Address>> GetAddress(int id)
         {
             try
