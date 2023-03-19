@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -21,7 +22,6 @@ namespace webapi.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
-    [Authorize]
     public class AddressesController : ControllerBase
     {
         private readonly IAddressService _service;
@@ -35,18 +35,23 @@ namespace webapi.Controllers
 
         // GET: api/Addresses
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
+
             return Ok(_mapper.Map<ICollection<AddressReadDto>>(await _service.GetAll()));
         }
 
         // GET: api/Addresses/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Address>> GetAddress(int id)
         {
             try
             {
+                var accessToken = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var decodedToken = handler.ReadJwtToken(accessToken);
+                var sub = decodedToken.Subject;
                 return Ok(_mapper.Map<AddressReadDto>(await _service.GetById(id)));
             }
             catch (EntityNotFoundException ex)

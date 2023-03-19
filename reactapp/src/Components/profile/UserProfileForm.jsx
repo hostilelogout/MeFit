@@ -5,15 +5,21 @@ import Modal from 'react-bootstrap/Modal';
 import UserAddressModal from '../Modals/UserAddressModal';
 import UserFitnessModal from '../Modals/UserFitnessModal';
 import UserInformationModal from '../Modals/UserInformation';
+import keycloak from '../../keycloak';
+
+
 
 
 const UserProfileForm = () => {
+
+    const token = keycloak.token;
 
     const [show, setShow] = useState(true);
 
     return (
         <>
             <UserInformationModal show={show} onHide={() => setShow(false)} />
+            <h1>{console.log(token)}</h1>
         </>
     );
 }
