@@ -139,7 +139,7 @@ namespace webapi
             var services = scope.ServiceProvider;
             var dbContext = services.GetRequiredService<MeFitContext>();
             //dbContext.Database.EnsureCreated(); 
-            //dbContext.Database.Migrate();
+            dbContext.Database.Migrate();
 
  
 
