@@ -77,7 +77,7 @@ namespace webapi.Services.WorkoutServices
         public async Task<ICollection<Workout>> GetAll()
         {
             var Workout = await _context.Workouts
-                   // .Include(x => x.Exercises)
+                    .Include(x => x.Sets)
                     //.Include(x => x.Goals)
                     .ToListAsync();
 
@@ -94,7 +94,7 @@ namespace webapi.Services.WorkoutServices
             }
 
             var workouts = await _context.Workouts
-              //  .Include(x => x.Exercises)
+                .Include(x => x.Sets)
                 .Where(x => (x.FkUserProfileId == null || x.FkUserProfileId == userProfile.Id))
                 .ToListAsync();
 
@@ -114,7 +114,7 @@ namespace webapi.Services.WorkoutServices
         public async Task<Workout> GetById(int id)
         {
             var Workout = await _context.Workouts
-                    //.Include(x => x.Exercises)
+                    .Include(x => x.Sets)
                     //.Include(x => x.Goals)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
