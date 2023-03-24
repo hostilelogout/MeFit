@@ -15,6 +15,5 @@ public partial class Exercise
 
     public ICollection<Musclegroup> Musclegroups { get; set; }
 
-    public ICollection<Workout> Workouts { get; set; }
 
 }

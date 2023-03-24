@@ -127,14 +127,14 @@ public partial class MeFitContext : DbContext
 
         // Exercise-Sets Linking table
 
-        modelBuilder.Entity<Exercise>()
-            .HasMany(m => m.Sets)
-            .WithMany(c => c.Exercises)
-            .UsingEntity<Dictionary<string, object>>(
-                "Exercise_Sets",
-                r => r.HasOne<Set>().WithMany().HasForeignKey("Fk_Set_Id"),
-                l => l.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
-                je => { je.HasKey("Fk_Exercise_Id", "Fk_Set_Id"); });
+        //modelBuilder.Entity<Exercise>()
+        //    .HasMany(m => m.Sets)
+        //    .WithMany(c => c.Exercises)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //        "Exercise_Sets",
+        //        r => r.HasOne<Set>().WithMany().HasForeignKey("Fk_Set_Id"),
+        //        l => l.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
+        //        je => { je.HasKey("Fk_Exercise_Id", "Fk_Set_Id"); });
 
         modelBuilder.Entity<Goal>(entity =>
         {
@@ -259,23 +259,29 @@ public partial class MeFitContext : DbContext
 
                 });
 
+        // Added 
+        modelBuilder.Entity<Set>(entity =>
+        {
+            entity.Property(e => e.FkWorkoutId).HasColumnName("Fk_Workout_Id");
+            entity.Property(e => e.FkExerciseId).HasColumnName("Fk_Exercise_Id");            
+        });
+        modelBuilder.Entity<Set>().ToTable("Sets");
 
         //  Workout Exercises linking table
+        //modelBuilder.Entity<Workout>()
+        //    .HasMany(m => m.Exercises)
+        //    .WithMany(c => c.Workouts)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //        "Workout_Exercises",
+        //        r => r.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
+        //        l => l.HasOne<Workout>().WithMany().HasForeignKey("Fk_Workout_Id"),
+        //        je =>
+        //        {
+        //            je.HasKey("Fk_Workout_Id", "Fk_Exercise_Id");
+        //            je.Property<int>("Fk_Workout_Id").ValueGeneratedNever();
+        //            je.Property<int>("Fk_Exercise_Id").ValueGeneratedNever();
 
-        modelBuilder.Entity<Workout>()
-            .HasMany(m => m.Exercises)
-            .WithMany(c => c.Workouts)
-            .UsingEntity<Dictionary<string, object>>(
-                "Workout_Exercises",
-                r => r.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
-                l => l.HasOne<Workout>().WithMany().HasForeignKey("Fk_Workout_Id"),
-                je =>
-                {
-                    je.HasKey("Fk_Workout_Id", "Fk_Exercise_Id");
-                    je.Property<int>("Fk_Workout_Id").ValueGeneratedNever();
-                    je.Property<int>("Fk_Exercise_Id").ValueGeneratedNever();
-
-                });
+        //        });
 
         modelBuilder.Entity<Status>(entity =>
         {
@@ -471,11 +477,6 @@ public partial class MeFitContext : DbContext
 
         #endregion
 
-        modelBuilder.Entity<Set>().HasData(new Set { Id = 1, Reps = 6, Total = 4 });
-        modelBuilder.Entity<Set>().HasData(new Set { Id = 2, Reps = 8, Total = 4 });
-        modelBuilder.Entity<Set>().HasData(new Set { Id = 3, Reps = 10, Total = 3 });
-        modelBuilder.Entity<Set>().HasData(new Set { Id = 4, Reps = 12, Total = 3 });
-
         modelBuilder.Entity<Exercise>().HasData(new Exercise { Id = 1, Name = "Bench press", Description = "any" });
         modelBuilder.Entity<Exercise>().HasData(new Exercise { Id = 2, Name = "Squat", Description = "any" });
         modelBuilder.Entity<Exercise>().HasData(new Exercise { Id = 3, Name = "Deadlift", Description = "any" });
@@ -504,24 +505,24 @@ public partial class MeFitContext : DbContext
         #region M2M seeding Excersise_Sets
 
         // Seed m2m Exercise_Sets. Need to define m2m and access linking table
-        modelBuilder.Entity<Exercise>()
-            .HasMany(e => e.Sets)
-            .WithMany(s => s.Exercises)
-            .UsingEntity<Dictionary<string, object>>(
-                "Exercise_Sets",
-                r => r.HasOne<Set>().WithMany().HasForeignKey("Fk_Set_Id"),
-                l => l.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
-                je =>
-                {
-                    je.HasKey("Fk_Exercise_Id", "Fk_Set_Id");
-                    je.HasData(
-                        new { Fk_Exercise_Id = 1, Fk_Set_Id = 1 },
-                        new { Fk_Exercise_Id = 2, Fk_Set_Id = 1 },
-                        new { Fk_Exercise_Id = 3, Fk_Set_Id = 1 },
-                        new { Fk_Exercise_Id = 4, Fk_Set_Id = 1 },
-                        new { Fk_Exercise_Id = 5, Fk_Set_Id = 1 }
-                    );
-                });
+        //modelBuilder.Entity<Exercise>()
+        //    .HasMany(e => e.Sets)
+        //    .WithMany(s => s.Exercises)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //        "Exercise_Sets",
+        //        r => r.HasOne<Set>().WithMany().HasForeignKey("Fk_Set_Id"),
+        //        l => l.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
+        //        je =>
+        //        {
+        //            je.HasKey("Fk_Exercise_Id", "Fk_Set_Id");
+        //            je.HasData(
+        //                new { Fk_Exercise_Id = 1, Fk_Set_Id = 1 },
+        //                new { Fk_Exercise_Id = 2, Fk_Set_Id = 1 },
+        //                new { Fk_Exercise_Id = 3, Fk_Set_Id = 1 },
+        //                new { Fk_Exercise_Id = 4, Fk_Set_Id = 1 },
+        //                new { Fk_Exercise_Id = 5, Fk_Set_Id = 1 }
+        //            );
+        //        });
 
         #endregion
 
@@ -564,30 +565,42 @@ public partial class MeFitContext : DbContext
 
         #region M2M seeding Workout-Exercises
 
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 1, Reps = 6, Total = 4,  FkWorkoutId = 1, FkExerciseId = 1 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 2, Reps = 8, Total = 4,  FkWorkoutId = 1, FkExerciseId = 5 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 3, Reps = 10, Total = 3, FkWorkoutId = 1, FkExerciseId = 12 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 4, Reps = 12, Total = 3, FkWorkoutId = 2, FkExerciseId = 2 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 5, Reps = 12, Total = 3, FkWorkoutId = 2, FkExerciseId = 13 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 6, Reps = 12, Total = 3, FkWorkoutId = 10, FkExerciseId = 9 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 7, Reps = 12, Total = 3, FkWorkoutId = 10, FkExerciseId = 10 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 8, Reps = 12, Total = 3, FkWorkoutId = 12, FkExerciseId = 9 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 9, Reps = 12, Total = 3, FkWorkoutId = 12, FkExerciseId = 10 });
+        modelBuilder.Entity<Set>().HasData(new Set { Id = 10, Reps = 12, Total = 3, FkWorkoutId = 12, FkExerciseId = 15 });
+
+
         // Seed m2m Workout-Exercises. Need to define m2m and access linking table
-        modelBuilder.Entity<Workout>()
-            .HasMany(w => w.Exercises)
-            .WithMany(e => e.Workouts)
-            .UsingEntity<Dictionary<string, object>>(
-                "Workout_Exercises",
-                r => r.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
-                l => l.HasOne<Workout>().WithMany().HasForeignKey("Fk_Workout_Id"),
-                je =>
-                {
-                    je.HasKey("Fk_Workout_Id", "Fk_Exercise_Id");
-                    je.HasData(
-                        new { Fk_Workout_Id = 1, Fk_Exercise_Id = 1 },
-                        new { Fk_Workout_Id = 1, Fk_Exercise_Id = 5 },
-                        new { Fk_Workout_Id = 1, Fk_Exercise_Id = 12 },
-                        new { Fk_Workout_Id = 2, Fk_Exercise_Id = 2 },
-                        new { Fk_Workout_Id = 2, Fk_Exercise_Id = 13 },
-                        new { Fk_Workout_Id = 10, Fk_Exercise_Id = 9 },
-                        new { Fk_Workout_Id = 10, Fk_Exercise_Id = 10 },
-                        new { Fk_Workout_Id = 12, Fk_Exercise_Id = 9 },
-                        new { Fk_Workout_Id = 12, Fk_Exercise_Id = 10 },
-                        new { Fk_Workout_Id = 12, Fk_Exercise_Id = 15 }
-                    );
-                });
+        //modelBuilder.Entity<Workout>()
+        //    .HasMany(w => w.Exercises)
+        //    .WithMany(e => e.Workouts)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //        "Workout_Exercises",
+        //        r => r.HasOne<Exercise>().WithMany().HasForeignKey("Fk_Exercise_Id"),
+        //        l => l.HasOne<Workout>().WithMany().HasForeignKey("Fk_Workout_Id"),
+        //        je =>
+        //        {
+        //            je.HasKey("Fk_Workout_Id", "Fk_Exercise_Id");
+        //            je.HasData(
+        //                new { Fk_Workout_Id = 1, Fk_Exercise_Id = 1 },
+        //                new { Fk_Workout_Id = 1, Fk_Exercise_Id = 5 },
+        //                new { Fk_Workout_Id = 1, Fk_Exercise_Id = 12 },
+        //                new { Fk_Workout_Id = 2, Fk_Exercise_Id = 2 },
+        //                new { Fk_Workout_Id = 2, Fk_Exercise_Id = 13 },
+        //                new { Fk_Workout_Id = 10, Fk_Exercise_Id = 9 },
+        //                new { Fk_Workout_Id = 10, Fk_Exercise_Id = 10 },
+        //                new { Fk_Workout_Id = 12, Fk_Exercise_Id = 9 },
+        //                new { Fk_Workout_Id = 12, Fk_Exercise_Id = 10 },
+        //                new { Fk_Workout_Id = 12, Fk_Exercise_Id = 15 }
+        //            );
+        //        });
 
         #endregion
 

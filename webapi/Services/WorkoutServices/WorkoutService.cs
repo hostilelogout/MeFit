@@ -56,7 +56,7 @@ namespace webapi.Services.WorkoutServices
                 exerciseList.Add(exercise);
             }
 
-            WorkoutToUpdateExercises.Exercises = exerciseList;
+            //WorkoutToUpdateExercises.Exercises = exerciseList;
             _context.Entry(WorkoutToUpdateExercises).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -77,7 +77,7 @@ namespace webapi.Services.WorkoutServices
         public async Task<ICollection<Workout>> GetAll()
         {
             var Workout = await _context.Workouts
-                    .Include(x => x.Exercises)
+                   // .Include(x => x.Exercises)
                     //.Include(x => x.Goals)
                     .ToListAsync();
 
@@ -94,7 +94,7 @@ namespace webapi.Services.WorkoutServices
             }
 
             var workouts = await _context.Workouts
-                .Include(x => x.Exercises)
+              //  .Include(x => x.Exercises)
                 .Where(x => (x.FkUserProfileId == null || x.FkUserProfileId == userProfile.Id))
                 .ToListAsync();
 
@@ -114,7 +114,7 @@ namespace webapi.Services.WorkoutServices
         public async Task<Workout> GetById(int id)
         {
             var Workout = await _context.Workouts
-                    .Include(x => x.Exercises)
+                    //.Include(x => x.Exercises)
                     //.Include(x => x.Goals)
                     .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -129,7 +129,7 @@ namespace webapi.Services.WorkoutServices
         public async Task<ICollection<Workout>> GetWorkoutsByTrainingprogramId(int id)
         {
             var Workout = await _context.Workouts
-                .Include(x => x.Exercises)
+                //.Include(x => x.Exercises)
                 .Include(x => x.Trainingprograms)
                 .Where(x => x.Trainingprograms.Any(tp => tp.Id == id))
                 .ToListAsync();
@@ -164,7 +164,7 @@ namespace webapi.Services.WorkoutServices
             }
             // Finding the Workout with its Exercises
             var WorkoutToUpdateExercises = await _context.Workouts
-                .Include(m => m.Exercises)
+                //.Include(m => m.Exercises)
                 .Where(m => m.Id == WorkoutId)
                 .FirstAsync();
             // Loop through Exercises, try and assign to Workout
@@ -177,7 +177,7 @@ namespace webapi.Services.WorkoutServices
                     throw new KeyNotFoundException($"Exercise with {id} not found");
                 exercises.Add(exercise);
             }
-            WorkoutToUpdateExercises.Exercises = exercises;
+            //WorkoutToUpdateExercises.Exercises = exercises;
             _context.Entry(WorkoutToUpdateExercises).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }

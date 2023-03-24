@@ -12,11 +12,11 @@ namespace webapi.Profiles
         public WorkoutPF()
         {
             CreateMap<WorkoutCreateDto, Workout>();
-            CreateMap<Workout, WorkoutReadDto>()
-                .ForMember(dto => dto.Exercises, options =>
-                    options.MapFrom(workoutDomain => workoutDomain.Exercises.Select(exercises => exercises.Id).ToList()))
-                .ForMember(dto => dto.FkUserProfileId, options =>
-                    options.MapFrom(workout => workout.FkUserProfileId));
+            //CreateMap<Workout, WorkoutReadDto>()
+            //    .ForMember(dto => dto.Exercises, options =>
+            //        options.MapFrom(workoutDomain => workoutDomain.Exercises.Select(exercises => exercises.Id).ToList()))
+            //    .ForMember(dto => dto.FkUserProfileId, options =>
+            //        options.MapFrom(workout => workout.FkUserProfileId));
             //.ForMember(dto => dto.FkUserProfileId, options =>
             //        options.MapFrom(workout => workout.FkUserProfileId.HasValue ? workout.FkUserProfileId.Value : 0));
             CreateMap<WorkoutUpdateDto, Workout>();

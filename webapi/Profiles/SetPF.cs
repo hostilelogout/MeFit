@@ -9,9 +9,9 @@ namespace webapi.Profiles
         public SetPF()
         {
             CreateMap<SetCreateDto, Set>();
-            CreateMap<Set, SetReadDto>()
-                .ForMember(dto => dto.Exercises, options =>
-                options.MapFrom(setDomain => setDomain.Exercises.Select(excercise => $"api/excercises/{excercise.Id}").ToList()));
+            //CreateMap<Set, SetReadDto>()
+            //    .ForMember(dto => dto.Exercises, options =>
+            //    options.MapFrom(setDomain => setDomain.Exercises.Select(excercise => $"api/excercises/{excercise.Id}").ToList()));
             CreateMap<SetUpdateDto, Set>();
         }
     }

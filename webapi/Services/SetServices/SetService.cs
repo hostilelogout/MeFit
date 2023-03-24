@@ -34,12 +34,14 @@ namespace webapi.Services.SetServices
 
         public async Task<ICollection<Set>> GetAll()
         {
-            return await _context.Sets.Include(x => x.Exercises).ToListAsync();
+            //return await _context.Sets.Include(x => x.Exercises).ToListAsync();
+            return await _context.Sets.ToListAsync();
         }
 
         public async Task<Set> GetById(int id)
         {
-           var set = await _context.Sets.Include(x=>x.Exercises).FirstOrDefaultAsync(x => x.Id == id);
+           //var set = await _context.Sets.Include(x=>x.Exercises).FirstOrDefaultAsync(x => x.Id == id);
+           var set = await _context.Sets.FirstOrDefaultAsync(x => x.Id == id);
 
             if (set == null)
             {

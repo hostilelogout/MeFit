@@ -21,7 +21,7 @@ public partial class Workout
 
     public ICollection<GoalWorkouts> GoalWorkouts { get; set; }
 
-    public ICollection<Exercise> Exercises { get; set; }
+    public ICollection<Set> Sets { get; set; }
 
 
 }
