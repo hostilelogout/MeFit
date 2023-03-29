@@ -97,7 +97,7 @@ const GoalCreation = () => {
                         {/* </GoalCreationContext.Provider> */}
 
                     </div>
-                    <div className="d-flex flex-column wp-100 overflow-y-scroll">
+                    <div className="d-flex flex-column wp-100">
                         
                         {/* Tabs */}
                         <div  >
